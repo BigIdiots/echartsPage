@@ -13,11 +13,15 @@
     <script>
         // alert(window.myCustomData)
         // 创建XMLHttpRequest对象
-        var days = window.myCustomData || 1;
+        // var days = window.myCustomData || 1;
         var xhr = new XMLHttpRequest();
         var currentDate = new Date().getTime();
-        let fromDate = days == 'max' ? new Date(2024, 0, 1, 0, 0, 0).getTime() : currentDate - Number(days) * 24 * 60 * 60 * 1000;
-        var url = `https://api.olct.net/market/history?symbol=OLCT%2FUSDT&from=${fromDate}&to=${currentDate}&resolution=1`;
+        // let fromDate = days == 'max' ? new Date(2024, 0, 1, 0, 0, 0).getTime() : currentDate - Number(days) * 24 * 60 * 60 * 1000;
+        // var url = `https://api.olct.net/market/history?symbol=OLCT%2FUSDT&from=${fromDate}&to=${currentDate}&resolution=1`;
+        var url = window.myCustomData;
+        if(!url) {
+            return
+        }
         // 配置请求类型和URL
         xhr.open('GET', url, true);
         // 设置响应类型，例如：文本或JSON
