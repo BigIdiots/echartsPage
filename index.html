@@ -21,8 +21,9 @@
         var url = window.myCustomData;
         alert(url)
         if(!url) {
-            return
+            return false
         }
+        console.log(url)
         // 配置请求类型和URL
         xhr.open('GET', url, true);
         // 设置响应类型，例如：文本或JSON
