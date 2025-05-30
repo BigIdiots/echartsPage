@@ -13,7 +13,7 @@
     <script>
         // alert(window.myCustomData)
         // 创建XMLHttpRequest对象
-        var days = window.myCustomData;
+        var days = window.myCustomData || 1;
         var xhr = new XMLHttpRequest();
         var currentDate = new Date().getTime();
         let fromDate = days == 'max' ? new Date(2024, 0, 1, 0, 0, 0).getTime() : currentDate - Number(days) * 24 * 60 * 60 * 1000;
