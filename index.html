@@ -20,120 +20,119 @@
         // var url = `https://api.olct.net/market/history?symbol=OLCT%2FUSDT&from=${fromDate}&to=${currentDate}&resolution=1`;
         var url = window.myCustomData;
         alert(url)
-        if(!url) {
-            return false
-        }
-        console.log(url)
-        // 配置请求类型和URL
-        xhr.open('GET', url, true);
-        // 设置响应类型，例如：文本或JSON
-        xhr.responseType = 'json';
-        // 设置请求完成时的回调函数
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                // 请求成功，处理数据
-                var response = this.response;
-                var myChart = echarts.init(document.getElementById('main'));
-                var option;
+        if (url) {
+            console.log(url)
+            // 配置请求类型和URL
+            xhr.open('GET', url, true);
+            // 设置响应类型，例如：文本或JSON
+            xhr.responseType = 'json';
+            // 设置请求完成时的回调函数
+            xhr.onload = function () {
+                if (this.status >= 200 && this.status < 300) {
+                    // 请求成功，处理数据
+                    var response = this.response;
+                    var myChart = echarts.init(document.getElementById('main'));
+                    var option;
 
-                const upColor = '#ec0000';
-                const upBorderColor = '#8A0000';
-                const downColor = '#00da3c';
-                const downBorderColor = '#008F28';
-                // Each item: open，close，lowest，highest
-                const data0 = splitData(response);
-                function splitData(rawData) {
-                    const categoryData = [];
-                    const values = [];
-                    for (var i = 0; i < rawData.length; i++) {
-                        var time = rawData[i].splice(0, 1)[0]
-                        var newTime = echarts.format.formatTime('yyyy-MM-dd\nhh:mm:ss', time)
-                        categoryData.push(newTime);
-                        values.push(rawData[i]);
+                    const upColor = '#ec0000';
+                    const upBorderColor = '#8A0000';
+                    const downColor = '#00da3c';
+                    const downBorderColor = '#008F28';
+                    // Each item: open，close，lowest，highest
+                    const data0 = splitData(response);
+                    function splitData(rawData) {
+                        const categoryData = [];
+                        const values = [];
+                        for (var i = 0; i < rawData.length; i++) {
+                            var time = rawData[i].splice(0, 1)[0]
+                            var newTime = echarts.format.formatTime('yyyy-MM-dd\nhh:mm:ss', time)
+                            categoryData.push(newTime);
+                            values.push(rawData[i]);
+                        }
+                        return {
+                            categoryData: categoryData,
+                            values: values
+                        };
                     }
-                    return {
-                        categoryData: categoryData,
-                        values: values
-                    };
-                }
-                option = {
-                    title: {
-                        text: '',
-                        left: 0
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross'
-                        }
-                    },
-                    // legend: {
-                    //     data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
-                    // },
-                    grid: {
-                        left: '5%',
-                        right: '5%',
-                        bottom: '10%',
-                        // backgroundColor: 'rgba(255, 255, 255, 0.01)',
-                        // borderColor: 'transparent',
-                        // show: true
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: data0.categoryData,
-                        boundaryGap: false,
-                        axisLine: { onZero: false },
-                        splitLine: { show: false },
-                        min: 'dataMin',
-                        max: 'dataMax',
-                        show: false
-                    },
-                    yAxis: {
-                        scale: true,
-                        splitLine: { show: false },
-                        show: false,
-                        splitArea: {
-                            show: true
-                        }
-                    },
-                    dataZoom: [
-                        {
-                            type: 'inside',
-                            start: 50,
-                            end: 100
+                    option = {
+                        title: {
+                            text: '',
+                            left: 0
                         },
-                        {
-                            show: false,
-                            type: 'slider',
-                            top: '90%',
-                            start: 50,
-                            end: 100
-                        }
-                    ],
-                    series: [
-                        {
-                            // name: '日K',
-                            type: 'candlestick',
-                            data: data0.values,
-                            itemStyle: {
-                                color: upColor,
-                                color0: downColor,
-                                borderColor: upBorderColor,
-                                borderColor0: downBorderColor
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross'
                             }
-                        }
-                    ]
-                };
+                        },
+                        // legend: {
+                        //     data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+                        // },
+                        grid: {
+                            left: '5%',
+                            right: '5%',
+                            bottom: '10%',
+                            // backgroundColor: 'rgba(255, 255, 255, 0.01)',
+                            // borderColor: 'transparent',
+                            // show: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: data0.categoryData,
+                            boundaryGap: false,
+                            axisLine: { onZero: false },
+                            splitLine: { show: false },
+                            min: 'dataMin',
+                            max: 'dataMax',
+                            show: false
+                        },
+                        yAxis: {
+                            scale: true,
+                            splitLine: { show: false },
+                            show: false,
+                            splitArea: {
+                                show: true
+                            }
+                        },
+                        dataZoom: [
+                            {
+                                type: 'inside',
+                                start: 50,
+                                end: 100
+                            },
+                            {
+                                show: false,
+                                type: 'slider',
+                                top: '90%',
+                                start: 50,
+                                end: 100
+                            }
+                        ],
+                        series: [
+                            {
+                                // name: '日K',
+                                type: 'candlestick',
+                                data: data0.values,
+                                itemStyle: {
+                                    color: upColor,
+                                    color0: downColor,
+                                    borderColor: upBorderColor,
+                                    borderColor0: downBorderColor
+                                }
+                            }
+                        ]
+                    };
 
-                option && myChart.setOption(option);
-            } else {
-                // 请求失败处理
-                console.error('Request failed:', this.statusText);
-                alert('Request failed:', this.statusText)
-            }
-        };
-        // 发送请求
-        xhr.send();
+                    option && myChart.setOption(option);
+                } else {
+                    // 请求失败处理
+                    console.error('Request failed:', this.statusText);
+                    alert('Request failed:', this.statusText)
+                }
+            };
+            // 发送请求
+            xhr.send();
+        }
     </script>
 </body>
 
